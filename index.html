@@ -1,84 +1,79 @@
-<!-- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Interactive Quiz</title>
+    <title>Rakesh's Quiz</title>
     <style>
         body {
-            background-color: #4e6c50;
+            background-color: rgb(95, 131, 118);
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
         }
-
         .main {
+            width: 100%;
+            height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
-            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
         }
-
         #box {
-            width: 50%;
-            padding: 30px;
-            box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.3);
-            background-color: #f4f4f9;
-            border-radius: 12px;
+            width: 100%;
+            max-width: 500px;
+            padding: 25px;
+            box-shadow: 0px 0px 15px rgb(87, 3, 3);
+            background-color: rgb(174, 203, 230);
+            border-radius: 15px;
             text-align: center;
         }
-
         h2 {
+            font-size: 22px;
             color: #333;
-            margin-bottom: 25px;
         }
-
         .row {
-            display: flex;
-            align-items: center;
-            justify-content: flex-start;
-            margin: 10px 0;
+            width: 100%;
+            margin: 15px;
+            text-align: left;
+        }
+        .row label {
             font-size: 16px;
         }
-
-        .row input[type="radio"] {
-            margin-right: 10px;
-            cursor: pointer;
-        }
-
         .btn {
-            padding: 10px 15px;
+            padding: 12px;
+            width: 100%;
             color: white;
-            background-color: #007bff;
+            background-color: rgb(0, 149, 255);
             font-size: 16px;
+            font-weight: 600;
             border: none;
             border-radius: 5px;
             cursor: pointer;
-            margin: 20px 10px;
-            transition: background-color 0.3s ease;
         }
-
         .btn:hover {
-            background-color: #0056b3;
+            background-color: rgb(0, 120, 204);
         }
-
-        #scorebox {
-            color: #000;
-            font-size: 18px;
+        .btn:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
         }
-
-        .hidden {
-            display: none;
+        @media (max-width: 600px) {
+            h2 {
+                font-size: 18px;
+            }
+            .btn {
+                font-size: 14px;
+            }
         }
     </style>
 </head>
-
 <body>
     <div class="main">
         <div id="box">
-            <h2 id="quesBox">1. Loading Question...</h2>
+            <h2 id="quesBox">Rakesh's Quiz</h2>
+            <h3 id="question">1. Loading Question...</h3>
             <div class="row">
                 <input type="radio" id="option1" class="option" value="a" name="option">
                 <label for="option1">a. Option 1</label>
@@ -95,56 +90,41 @@
                 <input type="radio" id="option4" class="option" value="d" name="option">
                 <label for="option4">d. Option 4</label>
             </div>
-            <button class="btn" onclick="prevQuestion()">Previous</button>
-            <button class="btn" onclick="submitQuiz()">Next</button>
-            <div id="scorebox" class="hidden"></div>
+            <button class="btn" onclick="submitQuiz()">Submit</button>
         </div>
     </div>
-
     <script>
-        const Questions = [{
-                'que': 'Which of the following is a markup language?',
-                'a': 'HTML',
-                'b': 'CSS',
-                'c': 'PHP',
-                'd': 'JAVASCRIPT',
-                'correct': 'a'
-            },
-            {
-                'que': 'JavaScript was launched in which year?',
-                'a': '2000',
-                'b': '1995',
-                'c': '1996',
-                'd': '1999',
-                'correct': 'b'
-            },
-            {
-                'que': 'What does CSS stand for?',
-                'a': 'Hypertext Markup Language',
-                'b': 'Cascading Style Sheet',
-                'c': 'JavaScript Object Notation',
-                'd': 'Cat Styles',
-                'correct': 'b',
-            }
+        const Questions = [
+            { 'que': 'Which of the following is a markup language?', 'a': 'HTML', 'b': 'CSS', 'c': 'PHP', 'd': 'JavaScript', 'correct': 'a' },
+            { 'que': 'JavaScript was launched in which year?', 'a': '2000', 'b': '1995', 'c': '1996', 'd': '1999', 'correct': 'b' },
+            { 'que': 'What does CSS stand for?', 'a': 'Hypertext Markup Language', 'b': 'Cascading Style Sheet', 'c': 'JavaScript Object Notation', 'd': 'Cat Styles', 'correct': 'b' },
+            { 'que': 'What is the default display property of a div?', 'a': 'block', 'b': 'inline', 'c': 'flex', 'd': 'none', 'correct': 'a' },
+            { 'que': 'Which HTML element is used to display an image?', 'a': '<img>', 'b': '<image>', 'c': '<pic>', 'd': '<src>', 'correct': 'a' },
+            { 'que': 'Which of the following is NOT a JavaScript data type?', 'a': 'String', 'b': 'Boolean', 'c': 'Integer', 'd': 'Object', 'correct': 'c' },
+            { 'que': 'How do you create a comment in JavaScript?', 'a': '// comment', 'b': '<!-- comment -->', 'c': '# comment', 'd': '/* comment */', 'correct': 'a' },
+            { 'que': 'What does the CSS property "float" do?', 'a': 'Positions an element to the left or right', 'b': 'Adds spacing between elements', 'c': 'Changes the background color', 'd': 'Adjusts the font size', 'correct': 'a' },
+            { 'que': 'Which JavaScript method is used to remove an item from an array?', 'a': 'pop()', 'b': 'push()', 'c': 'shift()', 'd': 'unshift()', 'correct': 'a' },
+            { 'que': 'Which HTML tag is used to define an unordered list?', 'a': '<ul>', 'b': '<li>', 'c': '<ol>', 'd': '<list>', 'correct': 'a' }
         ];
 
         let index = 0;
         let total = Questions.length;
         let right = 0;
         let wrong = 0;
-        const quesBox = document.getElementById("quesBox");
-        const optionInput = document.querySelectorAll('.option');
-        const scorebox = document.getElementById("scorebox");
+        let questionBox, optionInput;
 
         const loadQuestion = () => {
+            if (index === total) {
+                return endQuiz();
+            }
             reset();
             const data = Questions[index];
-            quesBox.innerText = `${index + 1}. ${data.que}`;
+            questionBox.innerText = `${index + 1}. ${data.que}`;
             optionInput[0].nextElementSibling.innerText = data.a;
             optionInput[1].nextElementSibling.innerText = data.b;
             optionInput[2].nextElementSibling.innerText = data.c;
             optionInput[3].nextElementSibling.innerText = data.d;
-        }
+        };
 
         const submitQuiz = () => {
             const data = Questions[index];
@@ -155,18 +135,8 @@
                 wrong++;
             }
             index++;
-            if (index === total) {
-                return endQuiz();
-            }
             loadQuestion();
-        }
-
-        const prevQuestion = () => {
-            if (index > 0) {
-                index--;
-                loadQuestion();
-            }
-        }
+        };
 
         const getAnswer = () => {
             let answer;
@@ -176,262 +146,63 @@
                 }
             });
             return answer;
-        }
+        };
 
         const reset = () => {
             optionInput.forEach(element => {
                 element.checked = false;
             });
-        }
+        };
 
         const endQuiz = () => {
-            scorebox.classList.remove('hidden');
-            scorebox.innerHTML = `<h3>Thank you for playing!</h3>
-                                  <p>Your score is ${right}/${total}</p>`;
-            document.getElementById("box").innerHTML = scorebox.innerHTML;
-        }
+            box.innerHTML =
+                `<h3 style="color: darkgreen;">Thank you for playing!</h3>
+                <h3 style="color: brown;">Your score is ${right} out of ${total}</h3>
+                <button class="btn" onclick="retakeQuiz()">Retake Quiz</button>`;
+        };
 
+        const retakeQuiz = () => {
+            // Reset variables
+            index = 0;
+            right = 0;
+            wrong = 0;
+
+            // Reload the original quiz structure
+            box.innerHTML = `
+                <h2 id="quesBox">Rakesh's Quiz</h2>
+                <h3 id="question">1. Loading Question...</h3>
+                <div class="row">
+                    <input type="radio" id="option1" class="option" value="a" name="option">
+                    <label for="option1">a. Option 1</label>
+                </div>
+                <div class="row">
+                    <input type="radio" id="option2" class="option" value="b" name="option">
+                    <label for="option2">b. Option 2</label>
+                </div>
+                <div class="row">
+                    <input type="radio" id="option3" class="option" value="c" name="option">
+                    <label for="option3">c. Option 3</label>
+                </div>
+                <div class="row">
+                    <input type="radio" id="option4" class="option" value="d" name="option">
+                    <label for="option4">d. Option 4</label>
+                </div>
+                <button class="btn" onclick="submitQuiz()">Submit</button>`;
+
+            // Reinitialize DOM references
+            questionBox = document.getElementById("question");
+            optionInput = document.querySelectorAll('.option');
+
+            // Load the first question
+            loadQuestion();
+        };
+
+        // Initialize DOM references on page load
+        questionBox = document.getElementById("question");
+        optionInput = document.querySelectorAll('.option');
+
+        // Load the first question
         loadQuestion();
     </script>
 </body>
-
-</html> -->
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Improved Quiz</title>
-    <style>
-        /* Overall styling for the quiz container and the body */
-        body {
-            background-color: #f3f4f6;
-            font-family: 'Arial', sans-serif;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-        }
-
-        /* The container for the quiz */
-        #quiz-container {
-            background-color: #ffffff;
-            padding: 40px;
-            border-radius: 12px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            text-align: center;
-            max-width: 500px;
-            width: 100%;
-        }
-
-        /* Styling for the question text */
-        h2 {
-            margin-bottom: 20px;
-            color: #333333;
-        }
-
-        /* Styling for each row (each option in the quiz) */
-        .row {
-            text-align: left;
-            margin: 15px 0;
-        }
-
-        /* Styling for the radio buttons */
-        input[type="radio"] {
-            margin-right: 10px;
-            transform: scale(1.2); /* Makes the radio button larger */
-            cursor: pointer; /* Shows pointer to indicate clickable elements */
-        }
-
-        /* Styling for the option labels */
-        label {
-            font-size: 16px;
-            color: #333;
-            cursor: pointer;
-        }
-
-        /* Styling for the progress bar container */
-        .progress-bar {
-            height: 20px;
-            background-color: #e0e0e0;
-            border-radius: 10px;
-            margin-bottom: 20px;
-            overflow: hidden;
-        }
-
-        /* Styling for the progress bar that fills up */
-        .progress-bar-fill {
-            height: 100%;
-            background-color: #00c851;
-            width: 0;
-            border-radius: 10px;
-            transition: width 0.3s ease-in-out; /* Smoothly fills the progress bar */
-        }
-
-        /* Styling for the buttons */
-        .btn {
-            padding: 10px 20px;
-            font-size: 16px;
-            color: #fff;
-            background-color: #007bff;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            margin: 15px 5px;
-        }
-
-        /* Disabled button styling */
-        .btn:disabled {
-            background-color: #cccccc;
-            cursor: not-allowed;
-        }
-
-        /* Hover effect for the button */
-        .btn:hover:not(:disabled) {
-            background-color: #0056b3;
-        }
-    </style>
-</head>
-
-<body>
-    <!-- Main quiz container -->
-    <div id="quiz-container">
-        <!-- Progress bar container -->
-        <div class="progress-bar">
-            <!-- Actual progress bar fill -->
-            <div id="progress" class="progress-bar-fill"></div>
-        </div>
-        <!-- Placeholder for the question text -->
-        <h2 id="quesBox">1. Loading Question...</h2>
-        <!-- Form containing the quiz options -->
-        <form id="quizForm">
-            <div class="row">
-                <input type="radio" id="option1" class="option" value="a" name="option">
-                <label for="option1">a. Option 1</label>
-            </div>
-            <div class="row">
-                <input type="radio" id="option2" class="option" value="b" name="option">
-                <label for="option2">b. Option 2</label>
-            </div>
-            <div class="row">
-                <input type="radio" id="option3" class="option" value="c" name="option">
-                <label for="option3">c. Option 3</label>
-            </div>
-            <div class="row">
-                <input type="radio" id="option4" class="option" value="d" name="option">
-                <label for="option4">d. Option 4</label>
-            </div>
-            <!-- Button container for navigation -->
-            <div id="btn-container">
-                <!-- Button to go to the next question -->
-                <button type="button" class="btn" onclick="nextQuestion()">Next</button>
-            </div>
-        </form>
-    </div>
-
-    <script>
-        // Question data for the quiz
-        const Questions = [{
-                'que': 'Which of the following is a markup language?',
-                'a': 'HTML',
-                'b': 'CSS',
-                'c': 'PHP',
-                'd': 'JAVASCRIPT',
-                'correct': 'a'
-            },
-            {
-                'que': 'JavaScript was launched in which year?',
-                'a': '2000',
-                'b': '1995',
-                'c': '1996',
-                'd': '1999',
-                'correct': 'b'
-            },
-            {
-                'que': 'What does CSS stand for?',
-                'a': 'Hypertext Markup Language',
-                'b': 'Cascading Style Sheet',
-                'c': 'JavaScript Object Notation',
-                'd': 'Cat Styles',
-                'correct': 'b',
-            }
-        ];
-
-        let index = 0; // Current question index
-        let right = 0; // Counter for correct answers
-        const total = Questions.length; // Total number of questions
-
-        const quesBox = document.getElementById("quesBox"); // Question text element
-        const optionInput = document.querySelectorAll('.option'); // All option input elements
-        const progressBar = document.getElementById("progress"); // Progress bar fill element
-        const btnContainer = document.getElementById("btn-container"); // Container for the buttons
-
-        // Function to load the current question and update the UI
-        const loadQuestion = () => {
-            if (index === total) return endQuiz(); // End the quiz if all questions are answered
-            const data = Questions[index]; // Get the current question's data
-            quesBox.innerText = `${index + 1}. ${data.que}`; // Set the question text
-            optionInput[0].nextElementSibling.innerText = data.a; // Set option 1 text
-            optionInput[1].nextElementSibling.innerText = data.b; // Set option 2 text
-            optionInput[2].nextElementSibling.innerText = data.c; // Set option 3 text
-            optionInput[3].nextElementSibling.innerText = data.d; // Set option 4 text
-            reset(); // Reset the selected option
-            updateProgressBar(); // Update the progress bar
-            updateButtons(); // Update button text/behavior based on progress
-        }
-
-        // Function to handle moving to the next question
-        const nextQuestion = () => {
-            const answer = getAnswer(); // Get the user's selected answer
-            if (answer === Questions[index].correct) {
-                right++; // Increment the correct answer count if the answer is correct
-            }
-            index++; // Move to the next question
-            loadQuestion(); // Load the next question
-        }
-
-        // Function to get the user's selected answer
-        const getAnswer = () => {
-            let answer = null;
-            optionInput.forEach(el => {
-                if (el.checked) {
-                    answer = el.value; // Set answer to the selected option's value
-                }
-            });
-            return answer; // Return the selected answer
-        }
-
-        // Function to reset all selected options
-        const reset = () => {
-            optionInput.forEach(el => el.checked = false); // Uncheck all options
-        }
-
-        // Function to update the progress bar width based on the current question
-        const updateProgressBar = () => {
-            const progressPercentage = ((index + 1) / total) * 100; // Calculate progress as a percentage
-            progressBar.style.width = `${progressPercentage}%`; // Set the progress bar's width
-        }
-
-        // Function to change the "Next" button to "Submit" on the last question
-        const updateButtons = () => {
-            if (index === total - 1) { // Check if the current question is the last one
-                btnContainer.innerHTML = `<button type="button" class="btn" onclick="nextQuestion()">Submit</button>`; // Change button text to "Submit"
-            }
-        }
-
-        // Function to end the quiz and display the user's score
-        const endQuiz = () => {
-            // Replace the quiz content with the final score
-            document.getElementById("quiz-container").innerHTML =
-                `<h3>Thank you for completing the quiz!</h3>
-                 <p>Your score is ${right} out of ${total}.</p>`;
-        }
-
-        loadQuestion(); // Initial call to load the first question
-    </script>
-</body>
-
 </html>
